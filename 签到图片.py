@@ -68,17 +68,19 @@ class My_Ui(QWidget):
                 self.downloadMessage(1)
                 self.ui.start.setEnabled(False)
 
-            for i, url in enumerate(link_list):
-                filename = f"{i}.jpg"
-                save_path = os.path.join(save_folder, filename)
-                response = requests.get(url, stream=True)
-                response.raise_for_status()
-                with open(save_path, 'wb') as file:
-                    for chunk in response.iter_content(chunk_size=256000):
-                        file.write(chunk)
+                for i, url in enumerate(link_list):
+                    filename = f"{i}.jpg"
+                    save_path = os.path.join(save_folder, filename)
+                    response = requests.get(url, stream=True)
+                    response.raise_for_status()
+                    with open(save_path, 'wb') as file:
+                        for chunk in response.iter_content(chunk_size=256000):
+                            file.write(chunk)
 
-            self.downloadMessage(0)
-            self.ui.start.setEnabled(True)
+                self.downloadMessage(0)
+                self.ui.start.setEnabled(True)
+            else:
+                self.downloadMessage(2)
         except InvalidFileException:
             self.downloadMessage(2)
             shutil.rmtree(save_folder)
