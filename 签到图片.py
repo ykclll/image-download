@@ -44,16 +44,15 @@ class My_Ui(QWidget):
             shutil.rmtree(dirName)
 
     def mkDir(self):  # 创建图片文件夹
-        save_folder = "图片"
+        save_folder = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') + "\图片"
         try:
             os.makedirs(save_folder, exist_ok=False)
-            self.download()
+            self.download(save_folder)
         except OSError as e:
             self.deleteExistDir(save_folder)
 
-    def download(self):  # 下载函数
+    def download(self, save_folder):  # 下载函数
         excelPath = self.ui.FileName.text()
-        save_folder = "图片"
         sheet_name = "已签到"
         try:
             workbook = load_workbook(excelPath)
@@ -67,7 +66,7 @@ class My_Ui(QWidget):
 
             if link_list:
                 self.downloadMessage(1)
-            self.ui.start.setEnabled(False)
+                self.ui.start.setEnabled(False)
 
             for i, url in enumerate(link_list):
                 filename = f"{i}.jpg"
