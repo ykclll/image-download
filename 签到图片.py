@@ -5,6 +5,7 @@ import requests
 import os
 import shutil
 from openpyxl import load_workbook
+from openpyxl.utils.exceptions import InvalidFileException
 
 
 class My_Ui(QWidget):
@@ -52,9 +53,9 @@ class My_Ui(QWidget):
 
     def download(self):  # 下载函数
         excelPath = self.ui.FileName.text()
-        if excelPath == :
-            save_folder = "图片"
-            sheet_name = "已签到"
+        save_folder = "图片"
+        sheet_name = "已签到"
+        try:
             workbook = load_workbook(excelPath)
             sheet = workbook[sheet_name]
             link_list = []
@@ -79,6 +80,9 @@ class My_Ui(QWidget):
 
             self.downloadMessage(0)
             self.ui.start.setEnabled(True)
+        except InvalidFileException:
+            self.downloadMessage(2)
+            shutil.rmtree(save_folder)
 
 
 app = QApplication(sys.argv)
